@@ -1,6 +1,6 @@
 import sys
 from typing import Optional
-
+from src.logger import logging
 
 def error_message_detail(error: Exception, error_detail: Optional[object] = None) -> str:
     _, _, exc_tb = sys.exc_info()
@@ -27,3 +27,4 @@ class CustomException(Exception):
 
     def __str__(self) -> str:
         return self.error_message
+
