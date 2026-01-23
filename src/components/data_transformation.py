@@ -47,6 +47,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(
                 steps=[
                     ("imputer", SimpleImputer(strategy="most_frequent")),
+                    # ✅ IMPORTANT FIX
                     ("one_hot_encoder", OneHotEncoder(handle_unknown="ignore")),
                     ("scaler", StandardScaler(with_mean=False)),
                 ]
@@ -86,6 +87,7 @@ class DataTransformation:
             train_arr = np.c_[input_feature_train_arr, np.array(target_feature_train_df)]
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 
+            # ✅ Save new preprocessor
             save_object(
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj,
@@ -94,7 +96,11 @@ class DataTransformation:
             logging.info("Preprocessor saved successfully")
             logging.info("Data Transformation completed successfully")
 
-            return train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path
+            return (
+                train_arr,
+                test_arr,
+                self.data_transformation_config.preprocessor_obj_file_path,
+            )
 
         except Exception as e:
             raise CustomException(e, sys)
